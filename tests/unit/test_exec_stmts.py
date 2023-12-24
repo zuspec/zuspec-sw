@@ -71,4 +71,83 @@ class TestExecStmts(TestBase):
         print("pub_h:\n%s" % pub_h.getvalue())
         print("prv_h:\n%s" % prv_h.getvalue())
 
+    def test_repeat_count(self):
+        content = """
+            import std_pkg::*;
+            function void doit() {
+                repeat (i : 10) {
+                    print("i: %d", i);
+                }
+            }
+        """
 
+        self.enableDebug(True)
+        ctxt : Context = self.loadContent(content)
+
+        roots = []
+
+        doit_f = ctxt.findDataTypeFunction("doit")
+        self.assertIsNotNone(doit_f)
+        roots.append(doit_f)
+
+        csrc = io.StringIO()
+        pub_h = io.StringIO()
+        prv_h = io.StringIO()
+
+        # TODO: find 'my_s' 
+        # TODO: pass to netlister
+
+        be_sw_f = be_sw.Factory.inst()
+        gen_ctxt = be_sw_f.mkContext(ctxt)
+        be_sw_f.generateC(
+            gen_ctxt,
+            roots,
+            csrc,
+            pub_h,
+            prv_h
+        )
+
+        print("csrc:\n%s" % csrc.getvalue())
+        print("pub_h:\n%s" % pub_h.getvalue())
+        print("prv_h:\n%s" % prv_h.getvalue())
+
+    def test_repeat_while(self):
+        content = """
+            import std_pkg::*;
+            function void doit() {
+                int i=0;
+                while (i < 16) {
+                    i = i + 1;
+                }
+            }
+        """
+
+        self.enableDebug(True)
+        ctxt : Context = self.loadContent(content)
+
+        roots = []
+
+        doit_f = ctxt.findDataTypeFunction("doit")
+        self.assertIsNotNone(doit_f)
+        roots.append(doit_f)
+
+        csrc = io.StringIO()
+        pub_h = io.StringIO()
+        prv_h = io.StringIO()
+
+        # TODO: find 'my_s' 
+        # TODO: pass to netlister
+
+        be_sw_f = be_sw.Factory.inst()
+        gen_ctxt = be_sw_f.mkContext(ctxt)
+        be_sw_f.generateC(
+            gen_ctxt,
+            roots,
+            csrc,
+            pub_h,
+            prv_h
+        )
+
+        print("csrc:\n%s" % csrc.getvalue())
+        print("pub_h:\n%s" % pub_h.getvalue())
+        print("prv_h:\n%s" % prv_h.getvalue())
